@@ -48,7 +48,8 @@ walls.push({
    y: 500, 
    w: 120, 
    h: 20 
-  });
+});
+
 
 // Draw Function
 window.addEventListener("load", draw);
@@ -61,9 +62,8 @@ function constrain(val, low, high) {
     } else {
       return val;
     }
-  }
+}
   
-
 function draw() {
   ctx.clearRect(0, 0, cnv.width, cnv.height);
   
@@ -79,35 +79,37 @@ function draw() {
   }
 
   // Update Player Position
-    if (leftPressed) {
-      rectX -= 5;
-    } else if (rightPressed) {
-      rectX += 5;
-    } else if (upPressed) {
-      rectY -= 5;
-    } else if (downPressed) {
-      rectY += 5;
-    }
+     if (leftPressed) {
+       rectX -= 5;
+        } else if (rightPressed) {
+          rectX += 5;
+        } else if (upPressed) {
+         rectY -= 5;
+         } else if (downPressed) {
+         rectY += 5;
+         }
   
       // Collision Detection
      for (let i = 0; i < walls.length; i++) {
       let wall = walls[i];
-      if (
-        rectX < wall.x + wall.w &&
-        rectX + size > wall.x &&
-        rectY < wall.y + wall.h &&
-        rectY + size > wall.y
-      ) {
-        return true;
-      } else {
-        return false;
+      if (rectX < wall.x + wall.w && rectX + size > wall.x && rectY < wall.y + wall.h && rectY + size > wall.y) { 
+        if (upPressed) {
+        rectY = wall.y + wall.h;
+      } else if (downPressed) {
+        rectY = wall.y - size
+      } else if (leftPressed) {
+        rectX = wall.x + wall.w
+      } else if (rightPressed) {
+        rectX = wall.x - size
       }
     }  
+   }
     //  Boundary Check
     rectX = constrain(rectX, 0, cnv.width - size);
     rectY = constrain(rectY, 0, cnv.height - size);
   
    requestAnimationFrame(draw);
+
 }
 
 // Event Listeners & Handlers
