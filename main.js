@@ -89,24 +89,26 @@ function draw() {
          rectY += 5;
          }
   
-      // Collision Detection
+        
      for (let i = 0; i < walls.length; i++) {
-      let wall = walls[i];
-      if (rectX < wall.x + wall.w && rectX + size > wall.x && rectY < wall.y + wall.h && rectY + size > wall.y) { 
-        if (upPressed) {
-        rectY = wall.y + wall.h;
-      } else if (downPressed) {
-        rectY = wall.y - size
-      } else if (leftPressed) {
+        let wall = walls[i];
+        if (rectX < wall.x + wall.w && rectX + size > wall.x && rectY < wall.y + wall.h && rectY + size > wall.y) 
+        { if (upPressed) {
+        rectY = wall.y + wall.h; 
+        } else if (downPressed){
+        rectY = wall.y - size; 
+        } else if (leftPressed){
         rectX = wall.x + wall.w
-      } else if (rightPressed) {
-        rectX = wall.x - size
-      }
-    }  
-   }
-    //  Boundary Check
-    rectX = constrain(rectX, 0, cnv.width - size);
-    rectY = constrain(rectY, 0, cnv.height - size);
+        } else if (rightPressed) {
+        rectX = wall.x - size; 
+    }
+  } 
+ }
+    
+     //  Boundary Check
+        rectX = constrain(rectX, 0, cnv.width - size);
+        rectY = constrain(rectY, 0, cnv.height - size);
+  
   
    requestAnimationFrame(draw);
 
@@ -135,7 +137,7 @@ function keydownHandler(e) {
     rectX -= 5;
   } else if (rightPressed) {
     rectX += 5;
-  }
+  } 
 }
 
 function keyupHandler(e) {
