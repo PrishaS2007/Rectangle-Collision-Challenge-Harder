@@ -14,6 +14,7 @@ let rightPressed = false;
 let upPressed = false;
 let downPressed = false;
 
+
 let walls = [];
 walls.push({ 
   x: -1, 
@@ -78,40 +79,45 @@ function draw() {
     ctx.fillRect(wall.x, wall.y, wall.w, wall.h);
   }
 
-  // Update Player Position
-     if (leftPressed) {
-       rectX -= 5;
-        } else if (rightPressed) {
-          rectX += 5;
-        } else if (upPressed) {
-         rectY -= 5;
-         } else if (downPressed) {
-         rectY += 5;
-         }
-  
-        
-     for (let i = 0; i < walls.length; i++) {
-        let wall = walls[i];
-        if (rectX < wall.x + wall.w && rectX + size > wall.x && rectY < wall.y + wall.h && rectY + size > wall.y) 
-        { if (upPressed) {
-        rectY = wall.y + wall.h; 
-        } else if (downPressed){
-        rectY = wall.y - size; 
-        } else if (leftPressed){
-        rectX = wall.x + wall.w
-        } else if (rightPressed) {
-        rectX = wall.x - size; 
+    // Update Player Position
+    let dx = 0;
+    let dy = 0;
+    if (leftPressed) {
+      dx = -5;
+    } else if (rightPressed) {
+      dx = 5;
+    } else if (upPressed) {
+      dy = -5;
+    } else if (downPressed) {
+      dy = 5;
     }
-  } 
- }
+  
+    // Check for Wall Collision
+    let nextX = rectX + dx;
+    let nextY = rectY + dy;
+    let collision = false;
     
-     //  Boundary Check
-        rectX = constrain(rectX, 0, cnv.width - size);
-        rectY = constrain(rectY, 0, cnv.height - size);
+    for (let i = 0; i < walls.length; i++) {
+      let wall = walls[i];
+      if (
+        nextX + size > wall.x && 
+        nextX < wall.x + wall.w && 
+        nextY + size > wall.y && 
+        nextY < wall.y + wall.h
+      ) {
+        collision = true;
+        break;
+      }
+    }
+  
+    // Move the player only if no collision detected
+    if (!collision) {
+      rectX = constrain(rectX + dx, 0, cnv.width - size);
+      rectY = constrain(rectY + dy, 0, cnv.height - size);
+    }
   
   
    requestAnimationFrame(draw);
-
 }
 
 // Event Listeners & Handlers
@@ -128,16 +134,6 @@ function keydownHandler(e) {
   } else if (e.code === "ArrowDown") {
     downPressed = true;
   }
-
-  if (upPressed) {
-    rectY -= 5;
-  } else if (downPressed) {
-    rectY += 5;
-  } else if (leftPressed) {
-    rectX -= 5;
-  } else if (rightPressed) {
-    rectX += 5;
-  } 
 }
 
 function keyupHandler(e) {
